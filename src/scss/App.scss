@@ -1,7 +1,7 @@
-@import 'variables';
-@import 'libs/normalize';
+@import "variables";
+@import "libs/normalize";
 
-@import 'components/all';
+@import "components/all";
 
 body {
   background-color: $background;
@@ -24,15 +24,36 @@ body {
   }
 
   &__items {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+
+    @media (max-width: 1400px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @media (max-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (max-width: 730px) {
+      grid-template-columns: repeat(1, 1fr);
+    }
   }
 
   &__top {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    @media (max-width: 1290px) {
+      flex-direction: column;
+
+      .categories {
+        margin-bottom: 30px;
+      }
+    }
   }
 }
 
