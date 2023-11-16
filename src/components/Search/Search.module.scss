@@ -5,13 +5,12 @@
   border: 1px solid rgba(0, 0, 0, 0.1);
   padding: 12px 20px;
   padding-left: 40px;
-  width: 300px;
+  width: 280px;
   border-radius: 10px;
   font-size: 16px;
   transition: all 0.2s ease-in-out;
 
   &:focus {
-    width: 400px;
     border: 2px solid rgba(rgb(254, 95, 30), 0.3);
   }
 }
@@ -22,4 +21,18 @@
   position: absolute;
   left: 12px;
   top: 12px;
+}
+
+.clearIcon {
+  width: 18px;
+  height: 18px;
+  opacity: 0.3;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
 }
