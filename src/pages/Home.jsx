@@ -39,7 +39,7 @@ const Home = () => {
     dispatch(setCurrentPage(number));
   };
 
-  const fetchPizzas = () => {
+  const fetchPizzas = async () => {
     setIsLoading(true);
 
     const sortBy = sort.sortProperty.replace("-", "");
@@ -47,14 +47,18 @@ const Home = () => {
     const category = categoryId > 0 ? `category=${categoryId}` : "";
     const search = searchValue ? `&search=${searchValue}` : "";
 
-    axios
-      .get(
+    try {
+      const response = await axios.get(
         `https://646a5e6270b2302c85e3c2b2.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${orderBy}${search}`,
-      )
-      .then((response) => {
-        setItems(response.data);
-        setIsLoading(false);
-      });
+      );
+      setItems(response.data);
+    } catch (error) {
+      console.log("Axios Error", error);
+    } finally {
+      setIsLoading(false);
+    }
+
+    window.scrollTo(0, 0);
   };
 
   // Если изменили параметры и был первый рендер
@@ -69,7 +73,7 @@ const Home = () => {
       navigate(`?${queryString}`);
     }
     isMounted.current = true;
-  }, [categoryId, sort.sortProperty, currentPage]);
+  }, [categoryId, sort.sortProperty, currentPage]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Если был первый рендер, то проверяем URl-параметры и сохраняем в редуксе
   useEffect(() => {
@@ -81,7 +85,7 @@ const Home = () => {
       dispatch(setFilters({ ...params, sort }));
       isSearch.current = false;
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Если был первый рендер, то запрашиваем пиццы
   useEffect(() => {
@@ -91,7 +95,7 @@ const Home = () => {
       fetchPizzas();
     }
     isSearch.current = false;
-  }, [categoryId, sort.sortProperty, searchValue, currentPage]);
+  }, [categoryId, sort.sortProperty, searchValue, currentPage]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
   const skeletons = [...new Array(6)].map((_, index) => (
