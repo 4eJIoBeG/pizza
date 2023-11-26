@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import qs from "qs";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -10,13 +10,11 @@ import {
   setCurrentPage,
   setFilters,
 } from "../redux/slices/filterSlice";
-// import{Categories,Sort,PizzaBlock,Skeleton,Pagination} from '../components'
 import Categories from "../components/Categories";
 import Sort, { list } from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import Pagination from "../components/Pagination";
-import { SearchContext } from "../App";
 import { fetchPizzas, selectPizzaData } from "../redux/slices/pizzaSlice";
 
 const Home = () => {
@@ -25,10 +23,9 @@ const Home = () => {
   const isSearch = useRef(false);
   const isMounted = useRef(false);
 
-  const { categoryId, sort, currentPage } = useSelector(selectFilter);
+  const { categoryId, sort, currentPage, searchValue } =
+    useSelector(selectFilter);
   const { items, status } = useSelector(selectPizzaData);
-
-  const { searchValue } = useContext(SearchContext);
 
   const onChangeCategory = (index) => {
     dispatch(setCategoryId(index));
@@ -91,7 +88,7 @@ const Home = () => {
     }
     isSearch.current = false;
   }, [categoryId, sort.sortProperty, searchValue, currentPage]); // eslint-disable-line react-hooks/exhaustive-deps
-
+  console.log(status);
   const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
   const skeletons = [...new Array(6)].map((_, index) => (
     <Skeleton key={index} />
@@ -104,6 +101,7 @@ const Home = () => {
         <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
+
       {status === "error" ? (
         <div className="content__error-info">
           <h2>
@@ -120,7 +118,6 @@ const Home = () => {
           {status === "loading" ? skeletons : pizzas}
         </div>
       )}
-
       <Pagination currentPage={currentPage} onChangePage={onChangePage} />
     </div>
   );
