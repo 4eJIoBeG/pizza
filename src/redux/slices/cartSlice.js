@@ -16,11 +16,13 @@ export const cartSlice = createSlice({
           obj.size === action.payload.size &&
           obj.type === action.payload.type,
       );
+
       if (findItem) {
         findItem.count++;
       } else {
         state.items.push({ ...action.payload, count: 1 });
       }
+
       state.totalPrice = state.items.reduce((sum, obj) => {
         return obj.price * obj.count + sum;
       }, 0);
@@ -32,12 +34,20 @@ export const cartSlice = createSlice({
           obj.size === action.payload.size &&
           obj.type === action.payload.type,
       );
+
       if (findItem) {
         findItem.count--;
       }
+
+      state.totalPrice = state.items.reduce((sum, obj) => {
+        return obj.price * obj.count + sum;
+      }, 0);
     },
     removeItem(state, action) {
       state.items = state.items.filter((obj) => obj.id !== action.payload);
+      state.totalPrice = state.items.reduce((sum, obj) => {
+        return obj.price * obj.count + sum;
+      }, 0);
     },
     clearItems(state) {
       state.items = [];

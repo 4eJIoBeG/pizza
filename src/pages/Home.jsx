@@ -88,7 +88,7 @@ const Home = () => {
     }
     isSearch.current = false;
   }, [categoryId, sort.sortProperty, searchValue, currentPage]); // eslint-disable-line react-hooks/exhaustive-deps
-  console.log(status);
+
   const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
   const skeletons = [...new Array(6)].map((_, index) => (
     <Skeleton key={index} />
@@ -108,9 +108,9 @@ const Home = () => {
             Произошла ошибка <span>😕</span>
           </h2>
           <p>
-            Не удалось получить нямочку :(
+            Не удалось найти нямочку :(
             <br />
-            Попробуйте повторить попытку позже.
+            Попробуйте ввести другое название.
           </p>
         </div>
       ) : (
