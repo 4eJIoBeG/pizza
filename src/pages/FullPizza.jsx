@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const FullPizza = () => {
   const [pizza, setPizza] = useState();
   const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchPizza() {
@@ -14,7 +15,8 @@ const FullPizza = () => {
         );
         setPizza(data);
       } catch {
-        alert("Error, pizza not found");
+        alert("Такой пиццы нет!");
+        navigate("/");
       }
     }
 
@@ -22,7 +24,7 @@ const FullPizza = () => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!pizza) {
-    return "Загрузка...";
+    return <div className="container">Загрузка...</div>;
   }
 
   return (
