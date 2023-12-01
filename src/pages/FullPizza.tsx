@@ -3,7 +3,11 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const FullPizza:React.FC = () => {
-  const [pizza, setPizza] = useState();
+  const [pizza, setPizza] = useState<{
+		imageUrl:string;
+		title:string;
+		price:number;
+	}>();
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -21,7 +25,7 @@ const FullPizza:React.FC = () => {
     }
 
     fetchPizza();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line
 
   if (!pizza) {
     return <div className="container">Загрузка...</div>;

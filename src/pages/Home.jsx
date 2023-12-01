@@ -66,7 +66,7 @@ const Home = () => {
       navigate(`?${queryString}`);
     }
     isMounted.current = true;
-  }, [categoryId, sort.sortProperty, currentPage]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [categoryId, sort.sortProperty, currentPage]); // eslint-disable-line
 
   // Если был первый рендер, то проверяем URl-параметры и сохраняем в редуксе
   useEffect(() => {
@@ -77,7 +77,7 @@ const Home = () => {
       dispatch(setFilters({ ...params, sort }));
       isSearch.current = false;
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line
 
   // Если был первый рендер, то запрашиваем пиццы
   useEffect(() => {
@@ -87,7 +87,7 @@ const Home = () => {
       getPizzas();
     }
     isSearch.current = false;
-  }, [categoryId, sort.sortProperty, searchValue, currentPage]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [categoryId, sort.sortProperty, searchValue, currentPage]); // eslint-disable-line
 
   const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
   const skeletons = [...new Array(6)].map((_, index) => (
