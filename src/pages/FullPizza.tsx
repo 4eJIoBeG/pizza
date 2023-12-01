@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const FullPizza = () => {
+const FullPizza:React.FC = () => {
   const [pizza, setPizza] = useState();
   const { id } = useParams();
   const navigate = useNavigate();
