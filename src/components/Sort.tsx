@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  SortPropertyEnum,
-  selectSort,
-  setSort,
-} from "../redux/slices/filterSlice";
 import { useRef } from "react";
 import { useEffect } from "react";
+import { SortPropertyEnum } from "../redux/filter/types";
+import { selectSort } from "../redux/filter/selectors";
+import { setSort } from "../redux/filter/slice";
 
 type SortItem = {
   name: string;
@@ -22,7 +20,7 @@ export const list: SortItem[] = [
   { name: "алфавиту🔽", sortProperty: SortPropertyEnum.TITLE_ASC },
 ];
 
-const SortPopup: React.FC = () => {
+const SortPopup: React.FC = React.memo(() => {
   const dispatch = useDispatch();
   const sort = useSelector(selectSort);
   const sortRef = useRef<HTMLDivElement>(null);
@@ -83,6 +81,6 @@ const SortPopup: React.FC = () => {
       )}
     </div>
   );
-};
+});
 
 export default SortPopup;

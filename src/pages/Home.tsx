@@ -1,26 +1,20 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import qs from "qs";
 
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import {
-  selectFilter,
-  setCategoryId,
-  setCurrentPage,
-  setFilters,
-} from "../redux/slices/filterSlice";
 import Categories from "../components/Categories";
 import Sort, { list } from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import Pagination from "../components/Pagination";
-import {
-  SearchPizzaParams,
-  fetchPizzas,
-  selectPizzaData,
-} from "../redux/slices/pizzaSlice";
+
 import { useAppDispatch } from "../redux/store";
+import { selectFilter } from "../redux/filter/selectors";
+import { setCategoryId, setCurrentPage } from "../redux/filter/slice";
+import { selectPizzaData } from "../redux/pizza/selectors";
+import { fetchPizzas } from "../redux/pizza/asyncActions";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -32,9 +26,9 @@ const Home: React.FC = () => {
     useSelector(selectFilter);
   const { items, status } = useSelector(selectPizzaData);
 
-  const onChangeCategory = (index: number) => {
+  const onChangeCategory = useCallback((index: number) => {
     dispatch(setCategoryId(index));
-  };
+  }, []); // eslint-disable-line
 
   const onChangePage = (page: number) => {
     dispatch(setCurrentPage(page));
@@ -61,41 +55,41 @@ const Home: React.FC = () => {
 
   // Если изменили параметры и был первый рендер
   useEffect(() => {
-    if (isMounted.current) {
-      const params = {
-        categoryId: categoryId > 0 ? categoryId : null,
-        sortProperty: sort.sortProperty,
-        currentPage,
-      };
+    // if (isMounted.current) {
+    //   const params = {
+    //     categoryId: categoryId > 0 ? categoryId : null,
+    //     sortProperty: sort.sortProperty,
+    //     currentPage,
+    //   };
 
-      const queryString = qs.stringify(params, { skipNulls: true });
+    //   const queryString = qs.stringify(params, { skipNulls: true });
 
-      navigate(`/?${queryString}`);
-    }
+    //   navigate(`/?${queryString}`);
+    // }
 
-    if (!window.location.search) {
-      dispatch(fetchPizzas({} as SearchPizzaParams));
-    }
+    // if (!window.location.search) {
+    //   dispatch(fetchPizzas({} as SearchPizzaParams));
+    // }
+    getPizzas();
   }, [categoryId, sort.sortProperty, searchValue, currentPage]); // eslint-disable-line
 
   // Если был первый рендер, то проверяем URl-параметры и сохраняем в редуксе
   useEffect(() => {
-    if (window.location.search) {
-      const params = qs.parse(
-        window.location.search.substring(1),
-      ) as unknown as SearchPizzaParams;
-      const sort = list.find((obj) => obj.sortProperty === params.sortBy);
-
-      dispatch(
-        setFilters({
-          searchValue: params.search,
-          categoryId: Number(params.category),
-          currentPage: Number(params.currentPage),
-          sort: sort ? sort : list[0],
-        }),
-      );
-    }
-    isMounted.current = true;
+    // if (window.location.search) {
+    //   const params = qs.parse(
+    //     window.location.search.substring(1),
+    //   ) as unknown as SearchPizzaParams;
+    //   const sort = list.find((obj) => obj.sortProperty === params.sortBy);
+    //   dispatch(
+    //     setFilters({
+    //       searchValue: params.search,
+    //       categoryId: Number(params.category),
+    //       currentPage: Number(params.currentPage),
+    //       sort: sort ? sort : list[0],
+    //     }),
+    //   );
+    // }
+    // isMounted.current = true;
   }, []); // eslint-disable-line
 
   // Если был первый рендер, то запрашиваем пиццы
